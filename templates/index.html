@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顔切り抜きくん</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #0A4894;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .hako {
+            background-color: #D1E7DD;
+            width: 1200px;
+            border-radius: 20px;
+            padding: 50px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        .setumeihako {
+            width: 45%;
+        }
+        .gazouhako {
+            width: 45%;
+        }
+        h1 {
+            font-size: 50px;
+            color: #333333;
+            margin-bottom: 50px;
+        }
+        .subtitle {
+            font-size: 25px;
+            color: #0A4894;
+            margin-bottom: 20px;
+        }
+        .subtitle2 {
+            font-size: 16px;
+            color: #555555;
+            margin-bottom: 10px;
+        }
+        .upload-area {
+            background-color: #FFFFFF;
+            border: 2px dashed #0A4894;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        .upload-text {
+            color: #0A4894;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .button {
+            background-color: #4169E1;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 0;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .result-area {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .result-image {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+        }
+        .error-message {
+            color: #FF0000;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .debug-info {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555555;
+        }
+    </style>
+</head>
+<body>
+    <div class="hako">
+        <div class="setumeihako">
+            <h1>顔切り抜きくん</h1>
+            <p class="subtitle">簡単で使いやすいトリミングツール</p>
+            <p class="subtitle2">jpgとpng画像ファイル限定</p>
+            <p class="subtitle2">自動で人物だけを切り取ります</p>
+            <p class="subtitle2">※顔以外もトリミングしてしまう場合もありますのでご容赦ください</p>
+        </div>
+        <div class="gazouhako">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-area">
+                    <p class="upload-text">画像を選択してください</p>
+                    {{ form.image }}
+                </div>
+                <button type="submit" class="button">画像を処理する</button>
+            </form>
+        </div>
+    </div>
+
+    {% if error_message %}
+    <div class="error-message">
+        {{ error_message }}
+    </div>
+    {% endif %}
+
+    {% if debug_info %}
+    <div class="debug-info">
+        {{ debug_info }}
+    </div>
+    {% endif %}
+
+    {% if cropped_faces %}
+    <div class="result-area">
+        <p>検出された顔: {{ faces_count }}個</p>
+        {% for face in cropped_faces %}
+            <img src="data:image/jpeg;base64,{{ face }}" alt="Detected Face" class="result-image">
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>
