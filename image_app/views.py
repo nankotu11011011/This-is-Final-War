@@ -8,7 +8,7 @@ import os
 from django.conf import settings
 
 # モデルを読み込む
-model_path = './models/face_detection_model.h5'
+model_path = './image_app/models/face_detection_model.h5'
 model = load_model(model_path)
 
 def preprocess_image(image):
