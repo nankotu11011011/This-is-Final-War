@@ -108,7 +108,7 @@ if __name__ == "__main__":
     plot_training_history(history)
 
     # 更新されたモデルの保存
-    model.save(model_path)
+    model.save(model_path, include_optimizer=False)
 
     print(f"モデルの学習が完了し、{model_path}に保存されました。")
 

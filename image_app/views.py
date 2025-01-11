@@ -9,7 +9,7 @@ from django.conf import settings
 
 # モデルを読み込む
 model_path = './image_app/models/face_detection_model.h5'
-model = load_model(model_path)
+model = load_model(model_path,compile=False)
 
 def preprocess_image(image):
     img = cv2.resize(image, (224, 224))
